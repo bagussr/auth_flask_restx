@@ -34,7 +34,6 @@ class LoginAuth(Resource):
     def post(self):
         data = ns.payload
         user = controller.get_user_by_username(data.get("username"))
-
         if user is None:
             abort(401, "User not found")
 
@@ -51,7 +50,7 @@ class RegisterAuth(Resource):
     def post(self):
         data = ns.payload
         try:
-            controller.create_user(data.get("name"), data.get("username"), data.get("password"))
-            return {"message": "User created"}, 201
+            user = controller.create_user(data.get("name"), data.get("username"), data.get("password"))
+            return {"message": "User created", "data": user}, 201
         except Exception as e:
             return {"message": str(e)}, 400
